@@ -1,0 +1,79 @@
+@baseUrl = http://localhost:8080
+
+### 1. Get every event: 200
+GET {{baseUrl}}/api/events
+
+### 2. Get event by ID: 200
+GET {{baseUrl}}/api/events/1
+
+### 3. Missing ID: 404
+GET {{baseUrl}}/api/events/999
+
+### 4. Search title: 200
+GET {{baseUrl}}/api/events?title=quiz
+
+### 5. No matches: 200 []
+GET {{baseUrl}}/api/events?title=not-found
+
+### 6. Create event: 201 (fresh run: ID 4)
+POST {{baseUrl}}/api/events
+Content-Type: application/json
+
+{
+  "title": "Python Workshop",
+  "location": "Room 105"
+}
+
+### 7. Update the created event: 200
+PUT {{baseUrl}}/api/events/4
+Content-Type: application/json
+
+{
+  "title": "Python Course",
+  "location": "Room 106"
+}
+
+### 8. Verify update: 200
+GET {{baseUrl}}/api/events/4
+
+### 9. Delete: 204
+DELETE {{baseUrl}}/api/events/4
+
+### 10. Verify deletion: 404
+GET {{baseUrl}}/api/events/4
+
+### 11. Update missing ID: 404
+PUT {{baseUrl}}/api/events/999
+Content-Type: application/json
+
+{
+  "title": "Unknown",
+  "location": "Room 1"
+}
+
+### 12. Delete missing ID: 404
+DELETE {{baseUrl}}/api/events/999
+
+### 13. Invalid title: 400
+POST {{baseUrl}}/api/events
+Content-Type: application/json
+
+{
+  "title": "",
+  "location": "Room 101"
+}
+
+### 14. Confirm there are still three events: 200
+GET {{baseUrl}}/api/events
+
+### 15. New ID must be 5: 201
+POST {{baseUrl}}/api/events
+Content-Type: application/json
+
+{
+  "title": "AI Talk",
+  "location": "Room 107"
+}
+
+### 16. Restart app before running: original three events
+GET {{baseUrl}}/api/events
